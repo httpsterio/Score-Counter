@@ -89,10 +89,11 @@ button {
 #end-match-btn {
   flex: 1; /* each button takes 50% */
   padding: 10px 14px;
-  font-size: 1.5rem;
+  padding-inline: 0.5rem;
+  font-size: 1.2rem;
   border: none;
   font-weight: bold;
-  border-radius: 6px;
+  border-radius: 0.25rem;
   cursor: pointer;
 }
 
@@ -103,7 +104,7 @@ button {
 .end-match-cancel {
   background-color: #bbb;
   margin-inline: 1rem;
-  padding-inline: 1rem;
+  padding-inline: 0.5rem;
   padding-block: 0.5rem;
   border-radius: 0.25rem;
 }
@@ -165,14 +166,24 @@ button {
 .modal-content {
   background: white;
   padding-inline: 4rem;
-  padding-block:2rem;
+  padding-block:1rem;
   border-radius: 8px;
+  font-size: 1rem;
   max-width: 80%; /* Takes up 80% of the screen width */
   max-height: 80%;
   overflow-y: auto;
   width: 40rem;  /* Ensures it doesn’t exceed 24rem in width */
   margin: auto;
   text-align: center;
+}
+
+.modal-content h3 {
+  font-size: 1.2rem;
+}
+
+.modal-content button {
+  font-size: 1.2rem;
+  margin-block: 1rem;
 }
 
 
@@ -224,6 +235,7 @@ button {
   justify-content: center;
   gap: 20px;
   padding: 20px;
+  padding-bottom: 10rem;
   box-sizing: border-box;
 }
 
