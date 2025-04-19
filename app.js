@@ -61,8 +61,14 @@ function renderPlayers() {
       if (confirm(`Delete player "${player.name}"?`)) {
         const updated = getPlayers().filter((_, i) => i !== index);
         savePlayers(updated);
+
+        // If there are no players left, clear the match history
+        if (updated.length === 0) {
+          localStorage.removeItem('matchHistory');
+        }
+
         renderPlayers();
-        showMatchHistory();
+        showMatchHistory();  // Optional, if you want to update the match history UI
       }
     });
 
