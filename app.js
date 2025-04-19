@@ -269,6 +269,8 @@ function finalizeMatch() {
   const rightName = selectedPlayers.right;
   const leftScore = scores.left;
   const rightScore = scores.right;
+  let winnerScore = 0;
+  let loserScore = 0;
 
   const players = getPlayers();
   let winner = null;
@@ -278,6 +280,15 @@ function finalizeMatch() {
     const winnerSide = leftScore > rightScore ? 'left' : 'right';
     winner = selectedPlayers[winnerSide];
     loser = selectedPlayers[winnerSide === 'left' ? 'right' : 'left'];
+
+    if (winnerSide == "left"){
+      winnerScore = leftScore;
+      loserScore = rightScore
+    }
+    else {
+      winnerScore = rightScore;
+      loserScore = leftScore;
+    }
 
     const winnerIndex = players.findIndex(player => player.name === winner);
     if (winnerIndex >= 0) players[winnerIndex].wins += 1;
@@ -299,8 +310,8 @@ function finalizeMatch() {
     isTie,
     winner: isTie ? leftName : winner,
     loser: isTie ? rightName : loser,
-    winnerScore: leftScore,
-    loserScore: rightScore,
+    winnerScore: winnerScore,
+    loserScore: loserScore,
     date: new Date().toLocaleString()
   });
   localStorage.setItem('matchHistory', JSON.stringify(matchHistory));
