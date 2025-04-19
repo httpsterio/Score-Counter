@@ -62,6 +62,7 @@ function renderPlayers() {
         const updated = getPlayers().filter((_, i) => i !== index);
         savePlayers(updated);
         renderPlayers();
+        showMatchHistory();
       }
     });
 
@@ -84,7 +85,19 @@ addPlayerBtn.addEventListener('click', () => {
   });
   savePlayers(players);
   renderPlayers();
+  showMatchHistory();
 });
+
+function showMatchHistory() {
+  const players = getPlayers(); // assumes you have a getPlayers() function
+  if (players.length === 0) {
+    matchHistoryBtn.classList.add("hidden");
+  } else {
+    matchHistoryBtn.classList.remove("hidden");
+  }
+}
+
+showMatchHistory();
 
 matchHistoryBtn.addEventListener('click', () => {
   const matchHistory = JSON.parse(localStorage.getItem('matchHistory') || '[]');
@@ -290,4 +303,76 @@ function finalizeMatch() {
   scores.right = 0;
   updateScoreDisplay();
   renderPlayers();
+}
+
+
+// EXPORT and IMPORT 
+function exportData() {
+  const data = {
+    exportedAt: new Date().toLocaleString(),
+    players: JSON.parse(localStorage.getItem("players") || "[]"),
+    matchHistory: JSON.parse(localStorage.getItem("matchHistory") || "[]")
+  };
+
+  const json = JSON.stringify(data, null, 2); // formatted with indentation
+  const blob = new Blob([json], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `4d-badminton-export-${Date.now()}.json`;
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('import-file').addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const data = JSON.parse(e.target.result);
+
+      // Check for required keys
+      if (!data.players || !data.matchHistory) {
+        showTemporaryMessage("Invalid file format: missing required keys.", "error");
+        return;
+      }
+
+      // Clear previous data first to ensure a full overwrite
+      localStorage.removeItem("players");
+      localStorage.removeItem("matchHistory");
+
+      // Or: localStorage.clear(); // if you want to wipe *everything*
+
+      // Save imported data
+      localStorage.setItem("players", JSON.stringify(data.players));
+      localStorage.setItem("matchHistory", JSON.stringify(data.matchHistory));
+
+      showTemporaryMessage("Import successful!", "success");
+
+      renderPlayers?.();
+      showMatchHistory?.(); // Optional: if it needs to become visible
+    } catch (err) {
+      showTemporaryMessage("Failed to import data: " + err.message, "error");
+    }
+  };
+  reader.readAsText(file);
+});
+
+// Function to show temporary message
+function showTemporaryMessage(message, type) {
+  const messageContainer = document.createElement("div");
+  messageContainer.textContent = message;
+  messageContainer.classList.add("import-message", type);
+
+  // Append the message to the body (or a specific container)
+  document.body.appendChild(messageContainer);
+
+  // Remove the message after 3 seconds
+  setTimeout(() => {
+    messageContainer.remove();
+  }, 3000);
 }

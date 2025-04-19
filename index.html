@@ -17,7 +17,6 @@
         </div>
 
         <ul id="player-list"></ul>
-
         <button id="match-history-btn">Match History</button>
 
         <div id="match-history-modal" class="modal hidden">
@@ -26,6 +25,13 @@
             <button id="close-history">Close</button>
           </div>
         </div>
+
+        <section class="export-import">
+          <button onclick="exportData()">Export Data</button>
+          <input type="file" id="import-file" accept="application/json" style="display: none;" />
+          <button onclick="document.getElementById('import-file').click()">Import Data</button>
+        </section>
+
       </div>
 
       <!-- Game View -->
@@ -54,7 +60,7 @@
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-      <button data-target="frontpage" id="btn-frontpage">Players</button>
+      <button data-target="frontpage" id="btn-frontpage" class="active">Players</button>
       <button data-target="game" id="btn-game">Game</button>
     </nav>
   </div>
@@ -68,8 +74,8 @@
   <div id="cancel-modal" class="modal hidden">
     <div class="modal-content">
       <h3>Are you sure you want to cancel the match?</h3>
-      <button class="cancel-btn">Cancel game</button>
       <button class="continue-btn">Keep playing</button>
+      <button class="cancel-btn">Cancel game</button>
     </div>
   </div>
   <!-- End Match Modal -->

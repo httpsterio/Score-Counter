@@ -75,6 +75,10 @@ button {
   padding-block: 1.5rem;
 }
 
+#match-history-btn.hidden {
+  display:none;
+}
+
 .game-header{
   display: flex;
   width: 100%;
@@ -94,6 +98,37 @@ button {
 
 #end-match-btn {
   background-color: blue;
+}
+
+.end-match-cancel {
+  background-color: #bbb;
+  margin-inline: 1rem;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.cancel-btn {
+  background-color: red;
+  margin-inline: 1rem;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.continue-btn {
+  background-color: #bbb;
+  margin-inline: 1rem;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.end-match-confirm {
+  margin-inline: 1rem;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  border-radius: 0.25rem;
 }
 
 #cancel-match-btn{
@@ -393,9 +428,50 @@ hr {
   flex: 1;
 }
 
-#player-list button {
-}
-
 .player-stats {
   padding-inline: 2ch;
+}
+
+#import-file {
+  display: none;
+}
+
+.export-import {
+  padding-top: 2rem;
+  border-radius: 0.25rem;
+}
+
+.export-import button {
+  border-radius: 0.25rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+/* Style for the temporary message */
+.import-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.import-message.success {
+  background-color: green;
+  color: white;
+}
+
+.import-message.error {
+  background-color: red;
+  color: white;
+}
+
+.import-message {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
 }
