@@ -11,6 +11,12 @@
     <div id="view-container">
       <!-- Frontpage -->
       <div id="frontpage" class="view active">
+        <section class="export-import">
+          <button onclick="exportData()">Export Data</button>
+          <input type="file" id="import-file" accept="application/json" style="display: none;" />
+          <button onclick="document.getElementById('import-file').click()">Import Data</button>
+        </section>
+        
         <div class="players-header">
           <h2>Players</h2>
           <button id="add-player">+</button>
@@ -25,12 +31,6 @@
             <button id="close-history">Close</button>
           </div>
         </div>
-
-        <section class="export-import">
-          <button onclick="exportData()">Export Data</button>
-          <input type="file" id="import-file" accept="application/json" style="display: none;" />
-          <button onclick="document.getElementById('import-file').click()">Import Data</button>
-        </section>
 
       </div>
 
