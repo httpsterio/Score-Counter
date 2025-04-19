@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+  <title>Badminton App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-wrapper">
+    <div id="view-container">
+      <!-- Frontpage -->
+      <div id="frontpage" class="view active">
+        <div class="players-header">
+          <h2>Players</h2>
+          <button id="add-player">＋</button>
+        </div>
+
+        <ul id="player-list"></ul>
+
+        <button id="match-history-btn">Match History</button>
+
+        <div id="match-history-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3>Match History</h3>
+            <button id="close-history">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game View -->
+      <div id="game" class="view">
+        <div class="game-header">
+          <button id="cancel-match-btn">Cancel Match</button>
+          <button id="end-match-btn">End Match</button>
+        </div>
+
+        <div class="game-sides">
+          <div class="side" id="side-left">
+            <div class="player-name-label" data-side="left">Player 1</div>
+            <div class="score" id="score-left">0</div>
+            <button class="plus" data-side="left">＋</button>
+            <button class="minus" data-side="left">－</button>
+          </div>
+          <div class="side" id="side-right">
+            <div class="player-name-label" data-side="right">Player 2</div>
+            <div class="score" id="score-right">0</div>
+            <button class="plus" data-side="right">＋</button>
+            <button class="minus" data-side="right">－</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button data-target="frontpage" id="btn-frontpage">Players</button>
+      <button data-target="game" id="btn-game">Game</button>
+    </nav>
+  </div>
+
+  <!-- Player Selection Popup -->
+  <div id="player-select-popup" class="hidden">
+    <div class="popup-content"></div>
+  </div>
+
+  <!-- Modal for Cancel Match -->
+  <div id="cancel-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Are you sure you want to cancel the match?</h3>
+      <button class="cancel-btn">Cancel game</button>
+      <button class="continue-btn">Continue</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

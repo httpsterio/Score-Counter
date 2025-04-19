@@ -1,0 +1,348 @@
+/* Global mobile-first layout */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #fff;
+  color: #333;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  font-family: "ServerMono-Regular",Consolas,monaco,monospace;
+}
+
+@font-face {
+  font-family: ServerMono-Regular;
+  src: url(ServerMono-Regular.woff) format("woff");
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Layout containers */
+#view-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-bottom: 80px; /* space for nav */
+  box-sizing: border-box;
+}
+
+.app-wrapper {
+  max-width: 40rem;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Button styles */
+button {
+  margin-top: 10px;
+}
+
+#match-history-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  font-size: 16px;
+  background: #eee;
+  border: none;
+  border-radius: 6px;
+}
+
+.game-header{
+  display: flex;
+  width: 100%;
+  gap: 10px; /* optional spacing between buttons */
+}
+
+#cancel-match-btn,
+#end-match-btn {
+  flex: 1; /* each button takes 50% */
+  padding: 10px 14px;
+  font-size: 14px;
+  border: none;
+  background: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#cancel-match-btn:hover {
+  background: #fdd;
+}
+
+#end-match-btn:hover {
+  background: #dfd;
+}
+
+/* Modal styles */
+.modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Dark background */
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%; /* Takes up 80% of the screen width */
+  width: 24rem;  /* Ensures it doesn’t exceed 24rem in width */
+  margin: auto;
+  text-align: center;
+}
+
+
+/* Bottom navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 800px;
+  margin: 0 auto;
+  height: 60px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #f8f8f8;
+  z-index: 9;
+}
+
+.bottom-nav button {
+  flex: 1;
+  height: 100%;
+  font-size: 16px;
+  border: none;
+  background: none;
+  outline: none;
+  transition: background 0.2s;
+}
+
+.bottom-nav button.active {
+  background-color: #e0e0e0;
+  font-weight: bold;
+}
+
+/* Game layout */
+.game-sides {
+  display: flex;
+  height: calc(100vh - 60px); /* minus nav height */
+}
+
+.side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.score {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.plus, .minus {
+  font-size: 48px;
+  padding: 10px 20px;
+  width: 100px;
+  border: none;
+  background: #ddd;
+  border-radius: 8px;
+  user-select: none;
+}
+
+.plus:active, .minus:active {
+  background: #bbb;
+}
+
+.player-name-label {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Player selection popup */
+#player-select-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#player-select-popup.hidden {
+  display: none;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.popup-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.popup-content li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.popup-content li:last-child {
+  border-bottom: none;
+}
+
+.popup-content li:hover {
+  background: #f0f0f0;
+}
+
+/* Views and transitions */
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* Match history */
+#history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Vertical spacing between matches */
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#history-list li {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* player1 | vs | player2 */
+  row-gap: 0.25rem; /* spacing between name and score */
+}
+
+/* Player names */
+#history-list .player-name-left {
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+#history-list .player-name-right {
+  text-align: right;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* Player scores */
+#history-list .score-left {
+  text-align: left;
+  font-size: 2rem;
+}
+
+#history-list .score-right {
+  text-align: right;
+  font-size: 2rem;
+}
+
+/* VS cell */
+#history-list .vs {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Optional winner/loser coloring */
+#history-list .winner {
+  color: green;
+}
+
+#history-list .loser {
+  color: red;
+}
+
+
+hr {
+  margin-top: 10px;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+/* Players section */
+.players-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#add-player {
+  font-family: "ServerMono-Regular", Consolas, Monaco, monospace;
+  font-size: 20px;
+  padding: 4px 10px;
+}
+
+/* Player list */
+#player-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+#player-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 6px;
+  border-bottom: 1px solid #eee;
+}
+
+#player-list .player-name {
+  flex: 1;
+}
+
+#player-list button {
+  margin-left: 10px;
+}
