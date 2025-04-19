@@ -36,7 +36,7 @@ const savePlayers = (players) => localStorage.setItem('players', JSON.stringify(
 
 function renderPlayers() {
   const players = getPlayers();
-  playerList.innerHTML = '';
+  playerList.innerHTML = ''; // Clear existing player list
 
   players.forEach((player, index) => {
     const li = document.createElement('li');
@@ -45,11 +45,18 @@ function renderPlayers() {
     nameSpan.textContent = player.name;
     nameSpan.className = 'player-name';
 
-    const winSpan = document.createElement('span');
-    winSpan.textContent = `Wins: ${player.wins || 0}`;
+    // Create W: L: T stats
+    const statsSpan = document.createElement('span');
+    statsSpan.className = 'player-stats';
+    statsSpan.innerHTML = `
+      <span style="color: green;">W:${player.wins || 0}</span> 
+      <span style="color: red;">L:${player.losses || 0}</span> 
+      <span style="color: black;">T:${player.ties || 0}</span>
+    `;
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '🗑️';
+    deleteBtn.textContent = 'x';
+    deleteBtn.classList.add("delete-button");
     deleteBtn.addEventListener('click', () => {
       if (confirm(`Delete player "${player.name}"?`)) {
         const updated = getPlayers().filter((_, i) => i !== index);
@@ -58,16 +65,23 @@ function renderPlayers() {
       }
     });
 
-    li.append(nameSpan, winSpan, deleteBtn);
+    li.append(nameSpan, statsSpan, deleteBtn);
     playerList.appendChild(li);
   });
 }
+renderPlayers();
+
 
 addPlayerBtn.addEventListener('click', () => {
   const name = prompt("Enter player name:");
   if (!name) return;
   const players = getPlayers();
-  players.push({ name, wins: 0 });
+  players.push({
+    name,
+    wins: 0,
+    losses: 0,
+    ties: 0
+  });
   savePlayers(players);
   renderPlayers();
 });
@@ -78,7 +92,7 @@ matchHistoryBtn.addEventListener('click', () => {
 
   container.innerHTML = `
     <h3>Match History</h3>
-    <ul id="history-list" style="max-height: 300px; overflow-y: auto; padding: 0; list-style: none; margin-bottom: 1em;"></ul>
+    <ul id="history-list" class="match-history" style=""></ul>
     <button id="close-history">Close</button>
   `;
 
@@ -207,38 +221,60 @@ continueGameBtn.addEventListener('click', () => {
   cancelModal.classList.add('hidden');
 });
 
-// === Finish Match Logic ===
+// === Finish Match Logic with Modal ===
 const endMatchBtn = document.getElementById('end-match-btn');
+const endMatchModal = document.getElementById('end-match-modal');
+const endMatchConfirmBtn = document.querySelector('.end-match-confirm');
+const endMatchCancelBtn = document.querySelector('.end-match-cancel');
 
+// Show confirmation modal
 endMatchBtn.addEventListener('click', () => {
+  endMatchModal.classList.remove('hidden');
+});
+
+// Cancel button inside modal
+endMatchCancelBtn.addEventListener('click', () => {
+  endMatchModal.classList.add('hidden');
+});
+
+// Confirm "End Match" from modal
+endMatchConfirmBtn.addEventListener('click', () => {
+  finalizeMatch();
+  endMatchModal.classList.add('hidden'); // closes the modal
+});
+
+// Finalize match logic (moved here)
+function finalizeMatch() {
   const isTie = scores.left === scores.right;
   const leftName = selectedPlayers.left;
   const rightName = selectedPlayers.right;
   const leftScore = scores.left;
   const rightScore = scores.right;
 
+  const players = getPlayers();
   let winner = null;
   let loser = null;
-  let winnerScore = null;
-  let loserScore = null;
 
   if (!isTie) {
     const winnerSide = leftScore > rightScore ? 'left' : 'right';
     winner = selectedPlayers[winnerSide];
     loser = selectedPlayers[winnerSide === 'left' ? 'right' : 'left'];
-    winnerScore = scores[winnerSide];
-    loserScore = scores[winnerSide === 'left' ? 'right' : 'left'];
 
-    // Update player wins
-    const players = getPlayers();
-    const playerIndex = players.findIndex(player => player.name === winner);
-    if (playerIndex >= 0) {
-      players[playerIndex].wins = (players[playerIndex].wins || 0) + 1;
-      savePlayers(players);
-    }
+    const winnerIndex = players.findIndex(player => player.name === winner);
+    if (winnerIndex >= 0) players[winnerIndex].wins += 1;
+
+    const loserIndex = players.findIndex(player => player.name === loser);
+    if (loserIndex >= 0) players[loserIndex].losses += 1;
+  } else {
+    const leftIndex = players.findIndex(player => player.name === leftName);
+    if (leftIndex >= 0) players[leftIndex].ties += 1;
+
+    const rightIndex = players.findIndex(player => player.name === rightName);
+    if (rightIndex >= 0) players[rightIndex].ties += 1;
   }
 
-  // Log the match
+  savePlayers(players);
+
   const matchHistory = JSON.parse(localStorage.getItem('matchHistory') || '[]');
   matchHistory.push({
     isTie,
@@ -250,15 +286,8 @@ endMatchBtn.addEventListener('click', () => {
   });
   localStorage.setItem('matchHistory', JSON.stringify(matchHistory));
 
-  // Display match result
-  if (isTie) {
-    alert(`${leftName} and ${rightName} tied with ${leftScore} points.`);
-  } else {
-    alert(`${winner} wins with ${winnerScore} points vs ${loser} with ${loserScore} points.`);
-  }
-
-  // Reset for new match
   scores.left = 0;
   scores.right = 0;
   updateScoreDisplay();
-});
+  renderPlayers();
+}

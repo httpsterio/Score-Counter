@@ -13,7 +13,7 @@
       <div id="frontpage" class="view active">
         <div class="players-header">
           <h2>Players</h2>
-          <button id="add-player">＋</button>
+          <button id="add-player">+</button>
         </div>
 
         <ul id="player-list"></ul>
@@ -39,14 +39,14 @@
           <div class="side" id="side-left">
             <div class="player-name-label" data-side="left">Player 1</div>
             <div class="score" id="score-left">0</div>
-            <button class="plus" data-side="left">＋</button>
-            <button class="minus" data-side="left">－</button>
+            <button class="plus" data-side="left">+</button>
+            <button class="minus" data-side="left">-</button>
           </div>
           <div class="side" id="side-right">
             <div class="player-name-label" data-side="right">Player 2</div>
             <div class="score" id="score-right">0</div>
-            <button class="plus" data-side="right">＋</button>
-            <button class="minus" data-side="right">－</button>
+            <button class="plus" data-side="right">+</button>
+            <button class="minus" data-side="right">-</button>
           </div>
         </div>
       </div>
@@ -69,7 +69,15 @@
     <div class="modal-content">
       <h3>Are you sure you want to cancel the match?</h3>
       <button class="cancel-btn">Cancel game</button>
-      <button class="continue-btn">Continue</button>
+      <button class="continue-btn">Keep playing</button>
+    </div>
+  </div>
+  <!-- End Match Modal -->
+  <div id="end-match-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Are you sure you want to end the match?</h3>
+      <button class="end-match-cancel">Keep playing</button>
+      <button class="end-match-confirm">End match</button>
     </div>
   </div>
 
