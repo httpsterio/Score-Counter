@@ -398,17 +398,38 @@ document.getElementById('import-file').addEventListener('change', function (even
   reader.readAsText(file);
 });
 
-// Function to show temporary message
+// Show temporary message when importing json
 function showTemporaryMessage(message, type) {
   const messageContainer = document.createElement("div");
   messageContainer.textContent = message;
   messageContainer.classList.add("import-message", type);
-
-  // Append the message to the body (or a specific container)
   document.body.appendChild(messageContainer);
 
   // Remove the message after 3 seconds
   setTimeout(() => {
     messageContainer.remove();
   }, 3000);
+}
+
+// screen sleep
+const noSleep = new NoSleep();
+async function enableNoSleep() {
+  noSleep.enable(); // Prevents the screen from sleeping
+  console.log("NoSleep enabled.");
+}
+
+document.addEventListener("click", enableNoSleep, { once: true });
+document.addEventListener("touchstart", enableNoSleep, { once: true });
+
+// service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  });
 }
