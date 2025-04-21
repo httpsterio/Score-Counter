@@ -31,8 +31,26 @@ const matchHistoryBtn = document.getElementById('match-history-btn');
 const matchHistoryModal = document.getElementById('match-history-modal');
 const closeHistoryBtn = document.getElementById('close-history');
 
-const getPlayers = () => JSON.parse(localStorage.getItem('players') || '[]');
-const savePlayers = (players) => localStorage.setItem('players', JSON.stringify(players));
+// === Local Storage Helpers ===
+// Retrieve players from local storage, defaults to empty array if none exist
+const getPlayers = () => {
+  try {
+    const players = localStorage.getItem('players');
+    return players ? JSON.parse(players) : [];
+  } catch (e) {
+    console.error("Error loading players from localStorage:", e);
+    return []; // Return empty array on error
+  }
+};
+
+// Save players array to local storage
+const savePlayers = (players) => {
+  try {
+    localStorage.setItem('players', JSON.stringify(players));
+  } catch (e) {
+    console.error("Error saving players to localStorage:", e);
+  }
+};
 
 function renderPlayers() {
   const players = getPlayers();
@@ -126,9 +144,10 @@ matchHistoryBtn.addEventListener('click', () => {
       const winnerColor = match.isTie ? 'black' : 'green';
       const loserColor = match.isTie ? 'black' : 'red';
 
+      li.classList.add("match-history-item");
       li.innerHTML = `
       <div class="player-name player-name-left" style="color:${winnerColor};">${match.winner}</div>
-      <div class="vs">vs</div>
+      <div class="vs"></div>
       <div class="player-name player-name-right" style="color:${loserColor};">${match.loser}</div>
 
       <div class="score player-name-left" style="color:${winnerColor};">${match.winnerScore}</div>
